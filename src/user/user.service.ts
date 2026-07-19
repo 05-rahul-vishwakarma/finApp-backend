@@ -16,6 +16,18 @@ export class UserService {
     });
   }
 
+  async loginDetails(phoneNumber:string) {
+    return this.prisma.user.findUnique({
+      where: { phoneNumber },
+      select: {
+      id: true,
+      fullName: true,
+      phoneNumber: true,
+      password: true,
+    },
+    });
+  }
+
   async findByEmail(email: string) {
     return this.prisma.user.findUnique({
       where: { email },
@@ -41,5 +53,12 @@ export class UserService {
         fullName: true,
       },
     });
+  }
+
+  async userDetails(){
+    return {
+      "message":'successfully fetch',
+      "details":'',
+    }
   }
 }

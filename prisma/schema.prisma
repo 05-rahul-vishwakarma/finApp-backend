@@ -10,13 +10,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole{
+  user
+  admin
+}
+
 model User {
   id                String   @id @default(cuid())
   phoneNumber       String   @unique @db.VarChar(15)
   email             String?  @unique @db.VarChar(255)
-  fullName          String   @unique @db.VarChar(100)
+  fullName          String   @db.VarChar(100)
   password          String   @db.VarChar(255)
   profilePictureUrl String?
+  role              UserRole @default(user)
   monthlyIncome     Decimal? @default(0) @db.Decimal(12, 2)
   currencyCode      String   @default("INR") @db.VarChar(3)
   isVerified        Boolean  @default(false)
