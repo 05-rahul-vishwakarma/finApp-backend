@@ -1,0 +1,31 @@
+// prisma/schemas/user.prisma
+
+model User {
+  id                String   @id @default(cuid())
+  phoneNumber       String   @unique @db.VarChar(15)
+  email             String?  @unique @db.VarChar(255)
+  fullName          String   @db.VarChar(100)
+  profilePictureUrl String?
+  monthlyIncome     Decimal? @default(0) @db.Decimal(12, 2)
+  currencyCode      String   @default("INR") @db.VarChar(3)
+  isVerified        Boolean  @default(false)
+  isActive          Boolean  @default(true)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  lastLoginAt       DateTime?
+  deletedAt         DateTime?
+
+  // Relations
+  otps              OtpVerification[]
+  uploads           Upload[]
+  transactions      Transaction[]
+  budgets           Budget[]
+  notifications     Notification[]
+  sessions          UserSession[]
+  settings          UserSetting?
+  categories        Category[]
+
+  @@index([phoneNumber])
+  @@index([email])
+  @@index([isActive])
+}

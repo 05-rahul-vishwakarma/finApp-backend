@@ -1,0 +1,23 @@
+// prisma/schemas/notification.prisma
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  type      String   @db.VarChar(30)
+  title     String   @db.VarChar(255)
+  message   String   @db.Text
+  data      Json?
+  isRead    Boolean  @default(false)
+  isClicked Boolean  @default(false)
+  priority  String   @default("normal") @db.VarChar(10)
+  createdAt DateTime @default(now())
+  readAt    DateTime?
+  clickedAt DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt(sort: Desc)])
+  @@map("notifications")
+}
