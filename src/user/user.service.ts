@@ -24,6 +24,7 @@ export class UserService {
       fullName: true,
       phoneNumber: true,
       password: true,
+      role:true,
     },
     });
   }
@@ -55,10 +56,31 @@ export class UserService {
     });
   }
 
-  async userDetails(){
-    return {
-      "message":'successfully fetch',
-      "details":'',
+  async getUserDetails(userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        phoneNumber: true,
+        fullName: true,
+        email: true,
+        monthlyIncome: true,
+        currencyCode: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    if (!user) {
+      return {
+        message: 'User not found',
+        details: null,
+      };
     }
+
+    return {
+      message: 'Successfully fetched user details',
+      details: user,
+    };
   }
 }

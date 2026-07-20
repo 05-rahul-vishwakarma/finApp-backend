@@ -25,11 +25,12 @@ export class AuthService {
 
   private async generateAccessToken(payload: {
     sub: string;
+    role:string;
     sessionId: string;
   }) {
     return this.jwtService.signAsync(payload, {
       secret: process.env.JWT_ACCESS_SECRET,
-      expiresIn: '15',
+      expiresIn: '15m',
     });
   }
 
@@ -37,6 +38,7 @@ export class AuthService {
 
   private async generateRefreshToken(payload: {
     sub: string;
+    role:string;
     sessionId: string;
   }) {
     return this.jwtService.signAsync(payload, {
@@ -104,11 +106,13 @@ export class AuthService {
     // 4. Generate Tokens
     const accessToken = await this.generateAccessToken({
       sub: user.id,
+      role:user.role,
       sessionId,
     });
 
     const refreshToken = await this.generateRefreshToken({
       sub: user.id,
+      role:user.role,
       sessionId,
     });
 
